@@ -21,10 +21,11 @@
         background: #f9fafb; /* Gray 50 */
       }
 
+
       .contacts-table tr:not(.isEditing) .isEditing-visible {
         display: none;
       }
-      .contacts-table tr:not(.isEditing) .isEditing-hidden {
+      .contacts-table tr:not(.isEditing) .isEditing_hidden {
         display: block;
       }
       .contacts-table tr.isEditing .isEditing-visible {
@@ -74,6 +75,7 @@
         </button>
       </aside>
 
+
       <!-- Section droite pour la liste des contacts -->
       <section class="w-2/3 p-6">
         <div class="flex justify-between items-center mb-4">
@@ -83,6 +85,7 @@
           </p>
         </div>
 
+
         <!-- Filtre de recherche -->
         <div class="mb-4">
           <input
@@ -91,6 +94,7 @@
             placeholder="Search a contact"
           />
         </div>
+
 
         <!-- Liste des contacts triée et filtrée -->
         <table class="table-auto w-full contacts-table">
@@ -107,7 +111,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="contact-row isEditing">
+            
+            <!-- Exemple d'une ligne de contact -->
+            <tr class="contact-row">
               <td class="p-4">
                 <span class="isEditing-hidden">qdg</span>
                 <input
@@ -152,10 +158,57 @@
                 </div>
               </td>
             </tr>
-            
+
+            <!-- Exemple d'une ligne en mode édition -->
+            <tr class="contact-row isEditing">
+              <td class="p-4">
+                <span class="isEditing-hidden">qdg</span>
+                <input
+                  type="text"
+                  value="qdg"
+                  class="input-firstname isEditing-visible w-full mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </td>
+              <td class="p-4">
+                <span class="isEditing-hidden">qdg</span>
+                <input
+                  type="text"
+                  value="qdg"
+                  class="input-lastname isEditing-visible w-full mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </td>
+              <td class="p-4">
+                <span class="isEditing-hidden">qdg</span>
+                <input
+                  type="text"
+                  value="qdg"
+                  class="input-email isEditing-visible w-full mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </td>
+              <td class="p-4">
+                <div class="flex justify-end space-x-2">
+                  <button
+                    class="btn-check isEditing-visible bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md"
+                  >
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                  <button
+                    class="btn-edit isEditing-hidden bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-md"
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button
+                    class="btn-delete isEditing-hidden bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </section>
+
 
       <footer class="w-full bg-gray-500 text-white text-xs p-2">
         &copy; EAFC 2025 Contacts App. All rights reserved.
@@ -163,3 +216,4 @@
     </div>
   </body>
 </html>
+
