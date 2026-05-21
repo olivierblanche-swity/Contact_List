@@ -4,6 +4,9 @@ function contactsApp() {
 
     search: "",
 
+    currentSort:"",
+    currentDirection:"asc",
+
     newContact: {
       firstname: "",
       lastname: "",
@@ -68,18 +71,25 @@ function contactsApp() {
      this.contacts.sort((a, b) => a.id - b.id); 
     },
 
-    sortByFirstname() {
 
+    sort(column) {
+      if (this.currentSort === column) {
+        this.currentDirection = this.currentDirection === "asc" ? "desc" : "asc";
+      } else {
+        this.currentSort = column;
+        this.currentDirection = "asc";
+      }
+      this.contacts.sort((a, b) => {
+        const aValue = a[column];
+        const bValue = b[column];
+        if (this.currentDirection === "asc") {
+          return aValue.localeCompare(bValue);
+        } else {
+          return bValue.localeCompare(aValue);
+        }
+      });
+    }
 
-      this.contacts.sort((a, b) => a.firstname.localeCompare(b.firstname));
-    },
-
-    sortByLastname() {
-      this.contacts.sort((a, b) => a.lastname.localeCompare(b.lastname));
-    },
-
-    sortByEmail() {
-      this.contacts.sort((a, b) => a.email.localeCompare(b.email));
-    },
+    
   };
 }
