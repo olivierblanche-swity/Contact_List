@@ -10,7 +10,7 @@ function appendContactInARRAY(contact) {
 
 // Fonction pour mettre à jour le localStorage
 function updatelocalStorage() {
-  localStorage.setItem("contacts", JSON.stringify(contacts));
+  localStorage.contacts = JSON.stringify(contacts);
 }
 
 // Fonction pour afficher le nombre de contacts
@@ -27,7 +27,7 @@ function addContactInDOM(contacts) {
 
   contacts.forEach((contact) => {
     const listItem = document.createElement("tr");
-    contactsTableBody.appendChild(listItem);
+    contactsTableBody.append(listItem);
     listItem.outerHTML = ` <tr class="contact-row">
       <td class="p-4">
         <span class="isEditing-hidden">${contact.firstname}</span>
@@ -115,10 +115,8 @@ form.addEventListener("submit", (e) => {
 contactsTableBody.addEventListener("click", (e) => {
   const deleteBtn = e.target.closest(".btn-delete");
   if (!deleteBtn) return;
-  const id = deleteBtn.dataset.id;
-  const index = contacts.findIndex(
-    (contact) => String(contact.id) === String(id),
-  );
+  const id = Number(deleteBtn.dataset.id);
+  const index = contacts.findIndex((contact) => contact.id === id);
   if (index !== -1) {
     contacts.splice(index, 1);
     updatelocalStorage();
@@ -130,10 +128,8 @@ contactsTableBody.addEventListener("click", (e) => {
 contactsTableBody.addEventListener("click", (e) => {
   const editBtn = e.target.closest(".btn-edit");
   if (!editBtn) return;
-  const id = editBtn.dataset.id;
-  const index = contacts.findIndex(
-    (contact) => String(contact.id) === String(id),
-  );
+  const id = Number(editBtn.dataset.id);
+  const index = contacts.findIndex((contact) => contact.id === id);
   const contactRow = e.target.closest(".contact-row");
   if (contactRow) {
     contactRow.classList.toggle("isEditing");
@@ -144,10 +140,8 @@ contactsTableBody.addEventListener("click", (e) => {
 contactsTableBody.addEventListener("click", (e) => {
   const saveBtn = e.target.closest(".btn-check");
   if (!saveBtn) return;
-  const id = saveBtn.dataset.id;
-  const index = contacts.findIndex(
-    (contact) => String(contact.id) === String(id),
-  );
+  const id = Number(saveBtn.dataset.id);
+  const index = contacts.findIndex((contact) => contact.id === id);
   if (index === -1) return;
   const row = saveBtn.closest(".contact-row");
   if (!row) return;
@@ -165,21 +159,6 @@ contactsTableBody.addEventListener("click", (e) => {
     : contacts[index].email;
   updatelocalStorage();
   addContactInDOM(contacts);
-});
-
-// pour valider la modification d'un contact
-contactsTableBody.addEventListener("click", (e) => {
-  const checkBtn = e.target.closest(".btn-check");
-  if (!checkBtn) return;
-  const id = checkBtn.dataset.id;
-  const index = contacts.findIndex(
-    (contact) => String(contact.id) === String(id),
-  );
-  const contactRow = e.target.closest(".contact-row");
-  if (contactRow) {
-    contactRow.classList.toggle("isEditing");
-    console.log("Toggled edit for", id, contactRow);
-  }
 });
 
 // Recherche en direct dans la barre de recherche
@@ -206,3 +185,62 @@ if (searchInput) {
 
 // Tri des contacts par ordre alphabétique
 
+const sortFirstname = document.querySelector("#sort-firstname");
+const sortLastname = document.querySelector("#sort-lastname");
+const sortEmail = document.querySelector("#sort-email");
+
+// état de la direction de tri: 1 = ascendant, -1 = descendant
+const sortDirections = {
+  firstname: 1,
+  lastname: 1,
+  email: 1,
+};
+
+if (sortFirstname) {
+  sortFirstname.addEventListener("click", (e) => {
+    e.preventDefault();
+    // bascule du sens de tri à chaque clic
+    sortDirections.firstname *= -1;
+    const dir = sortDirections.firstname;
+    const sortedContacts = contacts.sort((a, b) => {
+      const nameA = a.firstname;
+      const nameB = b.firstname;
+      if (nameA < nameB) return -1 * dir;
+      if (nameA > nameB) return 1 * dir;
+      return 0;
+    });
+    addContactInDOM(sortedContacts);
+  });
+}
+if (sortLastname) {
+  sortLastname.addEventListener("click", (e) => {
+    e.preventDefault();
+    // bascule du sens de tri à chaque clic
+    sortDirections.lastname *= -1;
+    const dir = sortDirections.lastname;
+    const sortedContacts = contacts.sort((a, b) => {
+      const nameA = a.lastname;
+      const nameB = b.lastname;
+      if (nameA < nameB) return -1 * dir;
+      if (nameA > nameB) return 1 * dir;
+      return 0;
+    });
+    addContactInDOM(sortedContacts);
+  });
+}
+if (sortEmail) {
+  sortEmail.addEventListener("click", (e) => {
+    e.preventDefault();
+    // bascule du sens de tri à chaque clic
+    sortDirections.email *= -1;
+    const dir = sortDirections.email;
+    const sortedContacts = contacts.sort((a, b) => {
+      const emailA = a.email;
+      const emailB = b.email;
+      if (emailA < emailB) return -1 * dir;
+      if (emailA > emailB) return 1 * dir;
+      return 0;
+    });
+    addContactInDOM(sortedContacts);
+  });
+}
