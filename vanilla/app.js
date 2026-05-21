@@ -199,9 +199,8 @@ const sortDirections = {
 if (sortFirstname) {
   sortFirstname.addEventListener("click", (e) => {
     e.preventDefault();
-    // bascule du sens de tri à chaque clic
-    sortDirections.firstname *= -1;
     const dir = sortDirections.firstname;
+    sortDirections.firstname *= -1;
     const sortedContacts = contacts.sort((a, b) => {
       const nameA = a.firstname;
       const nameB = b.firstname;
@@ -215,9 +214,8 @@ if (sortFirstname) {
 if (sortLastname) {
   sortLastname.addEventListener("click", (e) => {
     e.preventDefault();
-    // bascule du sens de tri à chaque clic
-    sortDirections.lastname *= -1;
     const dir = sortDirections.lastname;
+    sortDirections.lastname *= -1;
     const sortedContacts = contacts.sort((a, b) => {
       const nameA = a.lastname;
       const nameB = b.lastname;
@@ -231,9 +229,8 @@ if (sortLastname) {
 if (sortEmail) {
   sortEmail.addEventListener("click", (e) => {
     e.preventDefault();
-    // bascule du sens de tri à chaque clic
-    sortDirections.email *= -1;
     const dir = sortDirections.email;
+    sortDirections.email *= -1;
     const sortedContacts = contacts.sort((a, b) => {
       const emailA = a.email;
       const emailB = b.email;
