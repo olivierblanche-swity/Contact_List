@@ -175,8 +175,10 @@
       </section>
 
       
-      <footer class="w-full bg-gray-500 text-white text-xs p-2">
-        &copy; EAFC 2026 Contacts App. All rights reserved.
+      <footer class="w-full bg-gray-500 text-white text-xs p-2" x-data="footerComponent">
+       <div class="flex justify-center ">
+         &copy; EAFC - <span class="mx-2" x-text="annee"></span> - Contacts App. All rights reserved.
+       </div>
       </footer>
     </div>
     <script src="app.js"></script>

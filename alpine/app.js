@@ -4,9 +4,9 @@ function contactsApp() {
 
     search: "",
 
-    currentSort:"",
+    currentSort: "",
 
-    currentDirection:"asc",
+    currentDirection: "asc",
 
     newContact: {
       firstname: "",
@@ -26,7 +26,7 @@ function contactsApp() {
       });
     },
 
-      // Ajout d'un nouveau contact
+    // Ajout d'un nouveau contact
     addContact() {
       if (
         !this.newContact.firstname &&
@@ -74,16 +74,17 @@ function contactsApp() {
     contactCounter() {
       return this.contacts.length;
     },
-    
+
     // Tri des contacts par ID
     sortById() {
-     this.contacts.sort((a, b) => a.id - b.id); 
+      this.contacts.sort((a, b) => a.id - b.id);
     },
 
     // Tri des contacts par ordre asc  ou desc en cliquant sur les en-têtes de colonne
     sort(column) {
       if (this.currentSort === column) {
-        this.currentDirection = this.currentDirection === "asc" ? "desc" : "asc";
+        this.currentDirection =
+          this.currentDirection === "asc" ? "desc" : "asc";
       } else {
         this.currentSort = column;
         this.currentDirection = "asc";
@@ -97,8 +98,12 @@ function contactsApp() {
           return bValue.localeCompare(aValue);
         }
       });
-    }
-
-    
+    },
   };
 }
+
+document.addEventListener("alpine:init", () => {
+  Alpine.data("footerComponent", () => ({
+    annee: new Date().getFullYear(),
+  }));
+});

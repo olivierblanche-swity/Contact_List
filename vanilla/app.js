@@ -2,8 +2,7 @@ const contacts = JSON.parse(localStorage.contacts || "[]");
 const form = document.querySelector("#contact-form");
 const contactsCountElement = document.querySelector("#contacts-count");
 const contactsTableBody = document.querySelector("#contacts-list");
-
-
+const footerYear = document.querySelector("#footer-year");
 
 // Fonction pour afficher les contacts dans le DOM
 function addContactInDOM(contacts) {
@@ -69,6 +68,11 @@ function addContactInDOM(contacts) {
 // Affiche les contacts existants au chargement de la page
 addContactInDOM(contacts);
 
+// Affiche l'année actuelle dans le footer
+if (footerYear) {
+  footerYear.textContent = new Date().getFullYear();
+}
+
 // Fonction pour ajouter un contact dans le tableau des contacts
 function appendContactInARRAY(contact) {
   contacts.push(contact);
@@ -91,7 +95,7 @@ function displayContactsCount() {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(form);
-  const firstname = formData.get("firstname")?.trim(); // le ? permet d'éviter une erreur si le champ est absent 
+  const firstname = formData.get("firstname")?.trim(); // le ? permet d'éviter une erreur si le champ est absent
   const lastname = formData.get("lastname")?.trim();
   const email = formData.get("email")?.trim();
 
@@ -120,7 +124,8 @@ contactsTableBody.addEventListener("click", (e) => {
   if (!deleteBtn) return;
   const id = Number(deleteBtn.dataset.id);
   const index = contacts.findIndex((contact) => contact.id === id);
-  if (index !== -1) { // Vérifie que le contact existe avant de tenter de le supprimer si -1 le contact n'existe pas
+  if (index !== -1) {
+    // Vérifie que le contact existe avant de tenter de le supprimer si -1 le contact n'existe pas
     contacts.splice(index, 1);
     updatelocalStorage();
     addContactInDOM(contacts);
@@ -131,7 +136,7 @@ contactsTableBody.addEventListener("click", (e) => {
 contactsTableBody.addEventListener("click", (e) => {
   const editBtn = e.target.closest(".btn-edit");
   if (!editBtn) return;
-  const id = Number(editBtn.dataset.id); // Récupère l'ID du contact à partir de l'attribut data-id du bouton et le convertit en nombre 
+  const id = Number(editBtn.dataset.id); // Récupère l'ID du contact à partir de l'attribut data-id du bouton et le convertit en nombre
   const index = contacts.findIndex((contact) => contact.id === id);
   const contactRow = e.target.closest(".contact-row");
   if (contactRow) {
@@ -167,7 +172,7 @@ contactsTableBody.addEventListener("click", (e) => {
 
 // Recherche en direct dans la barre de recherche
 
-const searchInput = document.querySelector('#search-input');
+const searchInput = document.querySelector("#search-input");
 
 if (searchInput) {
   searchInput.addEventListener("input", (e) => {
