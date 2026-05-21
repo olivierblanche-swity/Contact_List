@@ -2,13 +2,42 @@ function contactsApp() {
   return {
     contacts: JSON.parse(localStorage.contacts) || "[]",
 
+    search: "",
+
     newContact: {
       firstname: "",
       lastname: "",
       email: "",
     },
 
+    get filteredContacts() {
+      return this.contacts.filter((contact) => {
+        const search = this.search.toLowerCase().trim();
+        return (
+          contact.firstname
+            .toLowerCase()
+            .includes(search) ||
+
+          contact.lastname
+            .toLowerCase()
+            .includes(search) ||
+
+          contact.email
+            .toLowerCase()
+            .includes(search)
+        );
+      });
+    },
+
     addContact() {
+      if (
+        !this.newContact.firstname &&
+        !this.newContact.lastname &&
+        !this.newContact.email
+      ) {
+        alert("Veuillez remplir tous les champs");
+        return;
+      }
       this.contacts.push({
         id: Date.now(),
         firstname: this.newContact.firstname,
@@ -34,7 +63,7 @@ function contactsApp() {
     },
 
     watcher() {
-     this.$watch("contacts", (newValue, oldValue) => {
+      this.$watch("contacts", (newValue, oldValue) => {
         localStorage.contacts = JSON.stringify(this.contacts);
       });
     },

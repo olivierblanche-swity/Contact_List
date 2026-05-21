@@ -95,7 +95,7 @@ form.addEventListener("submit", (e) => {
 
   // Empêcher l'ajout si tous les champs sont vides
   if (!firstname && !lastname && !email) {
-    alert("Veuillez remplir au moins un champ");
+    alert("VVeuillez remplir tous les champs");
     return;
   }
 
@@ -203,3 +203,6 @@ if (searchInput) {
     addContactInDOM(filteredContacts);
   });
 }
+
+// Tri des contacts par ordre alphabétique
+
