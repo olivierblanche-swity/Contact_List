@@ -3,22 +3,7 @@ const form = document.querySelector("#contact-form");
 const contactsCountElement = document.querySelector("#contacts-count");
 const contactsTableBody = document.querySelector("#contacts-list");
 
-// Fonction pour ajouter un contact dans le tableau des contacts
-function appendContactInARRAY(contact) {
-  contacts.push(contact);
-}
 
-// Fonction pour mettre à jour le localStorage
-function updatelocalStorage() {
-  localStorage.contacts = JSON.stringify(contacts);
-}
-
-// Fonction pour afficher le nombre de contacts
-function displayContactsCount() {
-  if (contactsCountElement) {
-    contactsCountElement.innerText = contacts.length;
-  }
-}
 
 // Fonction pour afficher les contacts dans le DOM
 function addContactInDOM(contacts) {
@@ -84,18 +69,35 @@ function addContactInDOM(contacts) {
 // Affiche les contacts existants au chargement de la page
 addContactInDOM(contacts);
 
+// Fonction pour ajouter un contact dans le tableau des contacts
+function appendContactInARRAY(contact) {
+  contacts.push(contact);
+}
+
+// Fonction pour mettre à jour le localStorage
+function updatelocalStorage() {
+  localStorage.contacts = JSON.stringify(contacts);
+}
+
+// Fonction pour afficher le nombre de contacts
+function displayContactsCount() {
+  if (contactsCountElement) {
+    contactsCountElement.innerText = contacts.length;
+  }
+}
+
 // pour afficher le nouveau contact
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(form);
-  const firstname = formData.get("firstname")?.trim() || "";
-  const lastname = formData.get("lastname")?.trim() || "";
-  const email = formData.get("email")?.trim() || "";
+  const firstname = formData.get("firstname")?.trim(); // le ? permet d'éviter une erreur si le champ est absent 
+  const lastname = formData.get("lastname")?.trim();
+  const email = formData.get("email")?.trim();
 
-  // Empêcher l'ajout si tous les champs sont vides
+  // Empêcher l'ajout si tous les champs sont vides (required mis dans le html donc pas nécessaire mais ça ajoute une sécurité supplémentaire)
   if (!firstname && !lastname && !email) {
-    alert("VVeuillez remplir tous les champs");
+    alert("Veuillez remplir tous les champs");
     return;
   }
 
@@ -108,6 +110,7 @@ form.addEventListener("submit", (e) => {
   appendContactInARRAY(contact);
   updatelocalStorage();
   addContactInDOM(contacts);
+  // Réinitialise le formulaire après l'ajout du contact
   form.reset();
 });
 
@@ -117,7 +120,7 @@ contactsTableBody.addEventListener("click", (e) => {
   if (!deleteBtn) return;
   const id = Number(deleteBtn.dataset.id);
   const index = contacts.findIndex((contact) => contact.id === id);
-  if (index !== -1) {
+  if (index !== -1) { // Vérifie que le contact existe avant de tenter de le supprimer si -1 le contact n'existe pas
     contacts.splice(index, 1);
     updatelocalStorage();
     addContactInDOM(contacts);
@@ -128,7 +131,7 @@ contactsTableBody.addEventListener("click", (e) => {
 contactsTableBody.addEventListener("click", (e) => {
   const editBtn = e.target.closest(".btn-edit");
   if (!editBtn) return;
-  const id = Number(editBtn.dataset.id);
+  const id = Number(editBtn.dataset.id); // Récupère l'ID du contact à partir de l'attribut data-id du bouton et le convertit en nombre 
   const index = contacts.findIndex((contact) => contact.id === id);
   const contactRow = e.target.closest(".contact-row");
   if (contactRow) {
@@ -148,6 +151,7 @@ contactsTableBody.addEventListener("click", (e) => {
   const inputFirstname = row.querySelector(".input-firstname");
   const inputLastname = row.querySelector(".input-lastname");
   const inputEmail = row.querySelector(".input-email");
+  // Met à jour les valeurs du contact dans le tableau en utilisant les valeurs des champs de saisie si elles sont présentes, sinon conserve les anciennes valeurs
   contacts[index].firstname = inputFirstname
     ? inputFirstname.value.trim()
     : contacts[index].firstname;
@@ -162,9 +166,9 @@ contactsTableBody.addEventListener("click", (e) => {
 });
 
 // Recherche en direct dans la barre de recherche
-const searchInput = document.querySelector(
-  'input[placeholder="Search a contact"]',
-);
+
+const searchInput = document.querySelector('#search-input');
+
 if (searchInput) {
   searchInput.addEventListener("input", (e) => {
     const search = e.target.value.trim().toLowerCase();
@@ -174,70 +178,67 @@ if (searchInput) {
     }
     const filteredContacts = contacts.filter((contact) => {
       return (
-        (contact.firstname || "").toLowerCase().includes(search) ||
-        (contact.lastname || "").toLowerCase().includes(search) ||
-        (contact.email || "").toLowerCase().includes(search)
+        contact.firstname.toLowerCase().includes(search) ||
+        contact.lastname.toLowerCase().includes(search) ||
+        contact.email.toLowerCase().includes(search)
       );
     });
     addContactInDOM(filteredContacts);
   });
 }
 
-// Tri des contacts par ordre alphabétique
+// Tri des contacts par ordre asc  ou desc en cliquant sur les en-têtes de colonne
 
 const sortFirstname = document.querySelector("#sort-firstname");
 const sortLastname = document.querySelector("#sort-lastname");
 const sortEmail = document.querySelector("#sort-email");
 
-// état de la direction de tri: 1 = ascendant, -1 = descendant
+// état de la direction de tri: 1 = ASC, -1 = DESC on les mets tous en ASC au départ
+
 const sortDirections = {
   firstname: 1,
   lastname: 1,
   email: 1,
 };
 
+// tri par firstname
 if (sortFirstname) {
   sortFirstname.addEventListener("click", (e) => {
     e.preventDefault();
     const dir = sortDirections.firstname;
+    // Inverse la direction pour le prochain clic
     sortDirections.firstname *= -1;
-    const sortedContacts = contacts.sort((a, b) => {
-      const nameA = a.firstname;
-      const nameB = b.firstname;
-      if (nameA < nameB) return -1 * dir;
-      if (nameA > nameB) return 1 * dir;
-      return 0;
-    });
-    addContactInDOM(sortedContacts);
+
+    addContactInDOM(
+      contacts.sort((a, b) => a.firstname.localeCompare(b.firstname) * dir),
+    );
   });
 }
+
+// tri par lastname
 if (sortLastname) {
   sortLastname.addEventListener("click", (e) => {
     e.preventDefault();
     const dir = sortDirections.lastname;
+    // Inverse la direction pour le prochain clic
     sortDirections.lastname *= -1;
-    const sortedContacts = contacts.sort((a, b) => {
-      const nameA = a.lastname;
-      const nameB = b.lastname;
-      if (nameA < nameB) return -1 * dir;
-      if (nameA > nameB) return 1 * dir;
-      return 0;
-    });
-    addContactInDOM(sortedContacts);
+
+    addContactInDOM(
+      contacts.sort((a, b) => a.lastname.localeCompare(b.lastname) * dir),
+    );
   });
 }
+
+// tri par email
 if (sortEmail) {
   sortEmail.addEventListener("click", (e) => {
     e.preventDefault();
     const dir = sortDirections.email;
+    // Inverse la direction pour le prochain clic
     sortDirections.email *= -1;
-    const sortedContacts = contacts.sort((a, b) => {
-      const emailA = a.email;
-      const emailB = b.email;
-      if (emailA < emailB) return -1 * dir;
-      if (emailA > emailB) return 1 * dir;
-      return 0;
-    });
-    addContactInDOM(sortedContacts);
+
+    addContactInDOM(
+      contacts.sort((a, b) => a.email.localeCompare(b.email) * dir),
+    );
   });
 }
