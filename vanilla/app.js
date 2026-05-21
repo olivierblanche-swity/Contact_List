@@ -1,4 +1,4 @@
-const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
+const contacts = JSON.parse(localStorage.contacts || "[]");
 const form = document.querySelector("#contact-form");
 const contactsCountElement = document.querySelector("#contacts-count");
 const contactsTableBody = document.querySelector("#contacts-list");

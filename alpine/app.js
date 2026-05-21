@@ -1,6 +1,6 @@
 function contactsApp() {
   return {
-    contacts: JSON.parse(localStorage.contacts) || "[]",
+    contacts: JSON.parse(localStorage.contacts || "[]"),
 
     search: "",
 
@@ -14,17 +14,9 @@ function contactsApp() {
       return this.contacts.filter((contact) => {
         const search = this.search.toLowerCase().trim();
         return (
-          contact.firstname
-            .toLowerCase()
-            .includes(search) ||
-
-          contact.lastname
-            .toLowerCase()
-            .includes(search) ||
-
-          contact.email
-            .toLowerCase()
-            .includes(search)
+          contact.firstname.toLowerCase().includes(search) ||
+          contact.lastname.toLowerCase().includes(search) ||
+          contact.email.toLowerCase().includes(search)
         );
       });
     },
@@ -70,6 +62,24 @@ function contactsApp() {
 
     contactCounter() {
       return this.contacts.length;
+    },
+
+    sortById() {
+     this.contacts.sort((a, b) => a.id - b.id); 
+    },
+
+    sortByFirstname() {
+
+
+      this.contacts.sort((a, b) => a.firstname.localeCompare(b.firstname));
+    },
+
+    sortByLastname() {
+      this.contacts.sort((a, b) => a.lastname.localeCompare(b.lastname));
+    },
+
+    sortByEmail() {
+      this.contacts.sort((a, b) => a.email.localeCompare(b.email));
     },
   };
 }

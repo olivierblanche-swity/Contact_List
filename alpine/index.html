@@ -41,7 +41,7 @@
       id="app"
       class="w-full bg-white rounded-lg shadow-lg flex flex-wrap overflow-hidden"
       x-data="contactsApp()"
-      x-init="watcher()"
+      x-init="watcher(), sortById();"
     >
       <!-- Aside gauche pour le formulaire -->
       <aside class="w-1/3 bg-gray-200 p-6 pb-12">
@@ -109,12 +109,12 @@
         <table class="table-auto w-full contacts-table">
           <thead>
             <tr class="bg-gray-200">
-              <th class="text-left p-4 rounded-tl-lg">
-                <a href="#">Firstname</a>
+              <th class="text-left p-4 rounded-tl-lg" >
+                <a href="#" @click="sortByFirstname()" >Firstname</a>
               </th>
-              <th class="text-left p-4"><a href="#">Lastname</a></th>
+              <th class="text-left p-4"><a href="#" @click="sortByLastname()" >Lastname</a></th>
               <th class="text-left p-4">
-                <a href="#">Email</a>
+                <a href="#" @click="sortByEmail()" >Email</a>
               </th>
               <th class="text-right p-4 rounded-tr-lg">Actions</th>
             </tr>
